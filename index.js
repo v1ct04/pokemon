@@ -17,17 +17,20 @@ const languages = new Set([
 	'zh-Hans',
 	'zh-Hant'
 ]);
+const nameLists = {}
 
 function getLocalizedList(lang) {
 	if (!lang || lang === 'en') {
 		return pokemon;
 	}
+	if (lang in nameLists) {
+		return nameLists[lang]
+	}
 
 	if (!languages.has(lang)) {
 		throw new Error(`Localized list for language code '${lang}' does not exist. Pull request welcome: ${repoUrl}`);
 	}
-
-	return require(`./data/${lang.toLowerCase()}`);	// eslint-disable-line import/no-dynamic-require
+	return nameLists[lang] = require(`./data/${lang.toLowerCase()}`);	// eslint-disable-line import/no-dynamic-require
 }
 
 exports.all = getLocalizedList;
